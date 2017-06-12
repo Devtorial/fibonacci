@@ -1,2 +1,16 @@
 # fibonacci
-A toy API server written in Go and toy web UI to show it running
+A simple API server written in Go which will output a user-defined number of values in the Fibonacci sequence (from 0 - 92 after which int64 overflows). Also included is a simple web UI to show it running in a UI.
+
+To use:
+1. `git clone github.com/robarchibald/fibonacci`
+2. `cd fibonacci/server`
+3. `go run fibonacci.go` (note: if you run from a folder other than the server folder, use the -c flag to set the correct client HTML folder)
+4. Open a web browser to `http://localhost:1123` to see the web UI or access the api directly at `http://localhost:1123/api/fib/{number from 0-92}`
+
+Command-line options:
+- `l`: Log directory. Default: /var/log
+- `c`: Client html directory. Default: ../client
+- `a`: Listen Address for server. Default: localhost
+- `p`: Listen Port for server. Default: 1123
+
+
