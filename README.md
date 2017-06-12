@@ -1,5 +1,6 @@
 # fibonacci
-[![Build Status](https://travis-ci.org/robarchibald/fibonacci.svg?branch=master)](https://travis-ci.org/robarchibald/fibonacci)
+[![Build Status](https://travis-ci.org/robarchibald/fibonacci.svg?branch=master)](https://travis-ci.org/robarchibald/fibonacci) [![Coverage Status](https://coveralls.io/repos/github/robarchibald/fibonacci/badge.svg?branch=master)](https://coveralls.io/github/robarchibald/fibonacci?branch=master)
+
 A simple API server written in Go which will output a user-defined number of values in the Fibonacci sequence (from 0 - 92 after which int64 overflows). Also included is a simple web UI to show it running in a UI.
 
 To use:
