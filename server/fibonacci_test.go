@@ -1,7 +1,10 @@
 package main
 
 import (
+	"net/http/httptest"
 	"testing"
+
+	"github.com/julienschmidt/httprouter"
 )
 
 var expected = []int{1, 1, 2, 3, 5, 8, 13, 21, 34, 55,
@@ -63,5 +66,28 @@ func TestGetFibSequence(t *testing.T) {
 				t.Errorf("getFibSequence(5) expected and actual don't match. Expected vs. actual: %d|%d", expected[i], actual[i])
 			}
 		}
+	}
+}
+
+func TestGetFib(t *testing.T) {
+	// Error due to no number being passed in
+	w := httptest.NewRecorder()
+	getFib(w, nil, []httprouter.Param{})
+	if body := w.Body.String(); body != errInvalidFormat+"\n" {
+		t.Error("expected invalid format", body)
+	}
+
+	// Error due to number out of range
+	w = httptest.NewRecorder()
+	getFib(w, nil, []httprouter.Param{httprouter.Param{Key: "number", Value: "-3"}})
+	if body := w.Body.String(); body != errInvalidNumber+"\n" {
+		t.Error("expected invalid number", body)
+	}
+
+	// success
+	w = httptest.NewRecorder()
+	getFib(w, nil, []httprouter.Param{httprouter.Param{Key: "number", Value: "5"}})
+	if body := w.Body.String(); body != "[1,1,2,3,5]" {
+		t.Error("expected valid result", body)
 	}
 }

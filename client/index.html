@@ -1,0 +1,42 @@
+<html>
+<head>
+  <title>Fibonacci Generator</title>
+  <script src="https://unpkg.com/vue@2.3.4/dist/vue.min.js"></script>
+  <script src="https://unpkg.com/axios@0.16.2/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+  <style>
+    .error {
+      color: #FF0000;
+    }
+    .error, .data {
+      margin-top: 10px;
+    }
+    .navbar-brand {
+      margin-top: -13px;
+    }
+    h1 {
+      font-size: 14pt;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
+    <div class=container>
+      <div class=navbar-header>
+        <a class=navbar-brand href="/"><img src="https://www.delltechnologies.com/content/dam/delltechnologies/images/brands/logo-virtustream.png" alt="Virtustream logo" height="50"></a>
+      </div>
+    </div>
+  </nav>
+  <div class="container" id="app">
+    <h1>Fibonacci Sequence generator</h1>
+    Number of digits: <input type="number" v-model="number" v-on:keydown.enter="getFib"></input>
+    <input type="button" v-on:click="getFib" value="Get Sequence"></input>
+    <div class="error" v-show="error">Error: {{ error }}</div>
+    <div class="data" v-show="data">Data: {{ data }}</div>
+  </div>
+    
+  <script src="fib.js"></script>
+</body>
+</html>
