@@ -126,7 +126,7 @@ func TestMain(t *testing.T) {
 		return s
 	}
 	flag.CommandLine = flag.NewFlagSet(os.Args[0], flag.ContinueOnError)
-	os.Args = os.Args[0:1]
+	os.Args = []string{os.Args[0], "-l", "."} // set logDir to current folder
 
 	main()
 	if !s.listenCalled {
