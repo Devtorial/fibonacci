@@ -16,7 +16,7 @@ import (
 )
 
 var errInvalidFormat = "Invalid url format /api/fib/{number} where {number} is an integer\nExample: /api/fib/5 to retrieve the first 5 digits in the fibonacci sequence"
-var errInvalidNumber = "Input must be between 0 and 92"
+var errInvalidNumber = "Input must be between 0 and 93"
 
 type server interface {
 	ListenAndServe() error
@@ -70,12 +70,15 @@ func fib() func() int {
 }
 
 func getFibSequence(num int) ([]int, error) {
-	if num < 0 || num > 92 {
-		return nil, errors.New(errInvalidNumber) // negative numbers are invalid and > 92 will overflow the integer
+	if num < 0 || num > 93 {
+		return nil, errors.New(errInvalidNumber) // negative numbers are invalid and > 93 will overflow the integer
 	}
 	f := fib()
 	r := make([]int, num)
-	for i := 0; i < num; i++ {
+	if num > 0 {
+		r[0] = 0
+	}
+	for i := 1; i < num; i++ {
 		r[i] = f()
 	}
 	return r, nil

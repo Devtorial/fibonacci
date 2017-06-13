@@ -19,7 +19,7 @@ func (s *fakeServer) ListenAndServe() error {
 	return nil
 }
 
-var expected = []int{1, 1, 2, 3, 5, 8, 13, 21, 34, 55,
+var expected = []int{0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55,
 	89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765,
 	10946, 17711, 28657, 46368, 75025, 121393, 196418, 317811, 514229, 832040,
 	1346269, 2178309, 3524578, 5702887, 9227465, 14930352, 24157817, 39088169, 63245986, 102334155,
@@ -34,7 +34,8 @@ var expected = []int{1, 1, 2, 3, 5, 8, 13, 21, 34, 55,
 func TestFib(t *testing.T) {
 	f := fib()
 	// values taken from http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html#series
-	for i := 0; i < len(expected); i++ {
+	// fib function starts sequence at 1 so skip the first value
+	for i := 1; i < len(expected); i++ {
 		actual := f()
 		if expected[i] != actual {
 			t.Errorf("mismatch in index %d. Expected vs. actual: %d|%d\n", i, expected[i], actual)
@@ -51,13 +52,13 @@ func TestGetFibSequence(t *testing.T) {
 	}
 
 	// Max allowed value for getFibSequence
-	actual, _ := getFibSequence(92)
-	if len(actual) != 92 {
-		t.Error("expected a sequence of 92, got", len(actual))
+	actual, _ := getFibSequence(93)
+	if len(actual) != 93 {
+		t.Error("expected a sequence of 93, got", len(actual))
 	} else {
-		for i := 0; i < 92; i++ {
+		for i := 0; i < 93; i++ {
 			if expected[i] != actual[i] {
-				t.Errorf("getFibSequence(92) expected and actual don't match. Expected vs. actual: %d|%d", expected[i], actual[i])
+				t.Errorf("getFibSequence(93) expected and actual don't match. Expected vs. actual: %d|%d", expected[i], actual[i])
 			}
 		}
 	}
@@ -99,7 +100,7 @@ func TestGetFib(t *testing.T) {
 	// success
 	w = httptest.NewRecorder()
 	getFib(w, nil, []httprouter.Param{httprouter.Param{Key: "number", Value: "5"}})
-	if body := w.Body.String(); body != "[1,1,2,3,5]" {
+	if body := w.Body.String(); body != "[0,1,1,2,3]" {
 		t.Error("expected valid result", body)
 	}
 }
