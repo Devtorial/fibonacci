@@ -126,14 +126,8 @@ func TestMain(t *testing.T) {
 		return s
 	}
 	flag.CommandLine = flag.NewFlagSet(os.Args[0], flag.ContinueOnError)
-	flag.CommandLine.Usage = func() {}
-	// add in flags that the test will add in automatically
-	flag.String("test.v", "", "")
-	flag.String("test.short", "", "")
-	flag.String("test.timeout", "", "")
-	flag.String("test.coverprofile", "", "")
-	flag.String("test.outputdir", "", "")
-	flag.Set("l", ".") // set log folder to local directory
+	os.Args = os.Args[0:1]
+
 	main()
 	if !s.listenCalled {
 		t.Error("expected ListenAndServe to be called")
