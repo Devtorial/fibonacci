@@ -1,11 +1,23 @@
 package main
 
 import (
+	"flag"
+	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/julienschmidt/httprouter"
 )
+
+type fakeServer struct {
+	listenCalled bool
+}
+
+func (s *fakeServer) ListenAndServe() error {
+	s.listenCalled = true
+	return nil
+}
 
 var expected = []int{1, 1, 2, 3, 5, 8, 13, 21, 34, 55,
 	89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765,
@@ -89,5 +101,40 @@ func TestGetFib(t *testing.T) {
 	getFib(w, nil, []httprouter.Param{httprouter.Param{Key: "number", Value: "5"}})
 	if body := w.Body.String(); body != "[1,1,2,3,5]" {
 		t.Error("expected valid result", body)
+	}
+}
+
+func TestGetFlags(t *testing.T) {
+	logDir, clientHTMLDir, listenAt := getFlags()
+	if logDir != "/var/log" || clientHTMLDir != "../client" || listenAt != ":1123" {
+		t.Error("expected default flag values")
+	}
+}
+
+func TestGetServer(t *testing.T) {
+	expectedAddr := "hello"
+	// use fake server, not real
+	s := getServer(expectedAddr, "htmldir", nil).(*http.Server)
+	if s.Addr != expectedAddr {
+		t.Error("expected correct address")
+	}
+}
+
+func TestMain(t *testing.T) {
+	s := &fakeServer{}
+	creator = func(addr string, handler http.Handler) server {
+		return s
+	}
+	flag.CommandLine = flag.NewFlagSet(os.Args[0], flag.ContinueOnError)
+	flag.CommandLine.Usage = func() {}
+	// add in flags that the test will add in automatically
+	flag.String("test.v", "", "")
+	flag.String("test.short", "", "")
+	flag.String("test.timeout", "", "")
+	flag.String("test.coverprofile", "", "")
+	flag.String("test.outputdir", "", "")
+	main()
+	if !s.listenCalled {
+		t.Error("expected ListenAndServe to be called")
 	}
 }
