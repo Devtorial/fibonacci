@@ -133,6 +133,7 @@ func TestMain(t *testing.T) {
 	flag.String("test.timeout", "", "")
 	flag.String("test.coverprofile", "", "")
 	flag.String("test.outputdir", "", "")
+	flag.Set("l", ".") // set log folder to local directory
 	main()
 	if !s.listenCalled {
 		t.Error("expected ListenAndServe to be called")
