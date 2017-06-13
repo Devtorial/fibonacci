@@ -1,0 +1,9 @@
+[Unit]
+Description=virtustream service
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/virtustream -c /usr/share/nginx/virtustreamHtml
+
+[Install]
+WantedBy=multi-user.target
